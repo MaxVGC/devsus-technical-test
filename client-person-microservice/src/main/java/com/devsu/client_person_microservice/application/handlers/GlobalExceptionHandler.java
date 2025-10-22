@@ -1,12 +1,17 @@
 package com.devsu.client_person_microservice.application.handlers;
 
+import java.math.BigInteger;
+import java.util.Objects;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.reactive.resource.NoResourceFoundException;
 
 import com.devsu.client_person_microservice.application.dtos.out.ErrorResponseDTO;
+import com.devsu.client_person_microservice.domain.expections.ApplicationException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +24,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ErrorResponseDTO.builder()
-                        .message("message.error.general")
+                        .message("An unexpected error occurred on the server")
                         .code("500")
                         .build());
     }
@@ -29,8 +34,34 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ErrorResponseDTO.builder()
-                        .message("message.error.resource.notFound")
+                        .message("The requested resource was not found")
                         .code("404")
+                        .build());
+    }
+
+    @ExceptionHandler(ApplicationException.class)
+    public ResponseEntity<ErrorResponseDTO> applicationExceptionHandler(ApplicationException exception) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponseDTO.builder()
+                        .message(exception.getMessage())
+                        .code("400")
+                        .build());
+    }
+
+
+    @ExceptionHandler(WebExchangeBindException.class)
+    public ResponseEntity<ErrorResponseDTO> customValidationErrorHandling(
+            WebExchangeBindException exception) {
+
+        String exceptionMessage = Objects.requireNonNull(exception.getBindingResult().getFieldError())
+                .getDefaultMessage();
+        log.error("Validation exception: {}", exceptionMessage);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponseDTO.builder()
+                        .message(exceptionMessage)
+                        .code("400")
                         .build());
     }
 
