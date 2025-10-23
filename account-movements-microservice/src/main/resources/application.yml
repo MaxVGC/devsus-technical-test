@@ -1,21 +1,21 @@
 server:
-  port: 8081
+  port: 8080
 spring:
   kafka:
-    bootstrap-servers: 192.168.0.6:29092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:192.168.0.6:29092}
   application:
     name: client-person-microservice
   datasource:
-    username: devuser
-    password: devpassword
-    url: jdbc:postgresql://192.168.0.6:5432/devdb
+    username: ${DB_USERNAME:devuser}
+    password: ${DB_PASSWORD:devpass}
+    url: ${DB_URL:jdbc:postgresql://192.168.0.6:5432/devdb}
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${HIBERNATE_DDL_AUTO:update}
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 com:
   devsu:
     clients-service:
-      url: http://localhost:8080
+      url: ${CLIENT_SERVICE_URL:http://localhost:8080}
