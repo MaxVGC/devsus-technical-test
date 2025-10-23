@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
+import com.devsu.account_movements_microservice.application.dtos.in.QueryReportDTO;
 import com.devsu.account_movements_microservice.application.ports.IAccountRepository;
 import com.devsu.account_movements_microservice.application.ports.IClientRepository;
 import com.devsu.account_movements_microservice.application.ports.IMovementRepository;
@@ -17,6 +18,7 @@ import com.devsu.account_movements_microservice.infrastructure.driver_adapter.po
 import com.devsu.account_movements_microservice.infrastructure.driver_adapter.postgres.mappers.MovementMapper;
 import com.devsu.account_movements_microservice.infrastructure.driver_adapter.postgres.repositories.AccountRepository;
 import com.devsu.account_movements_microservice.infrastructure.driver_adapter.postgres.repositories.MovementRepository;
+import com.devsu.account_movements_microservice.infrastructure.driver_adapter.postgres.specifications.ReportSpecification;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -81,6 +83,16 @@ public class PostgresAdapter implements IMovementRepository, IAccountRepository 
         return Mono.fromCallable(() -> {
             Optional<AccountEntity> accountEntityOpt = accountRepository.findByAccountNumber(accountNumber);
             return accountEntityOpt.map(accountMapper::toAccount);
+        });
+    }
+
+    @Override
+    public Mono<List<Movement>> findByDatesAndPropietaryId(QueryReportDTO query) {
+        return Mono.fromCallable(() -> {
+            List<MovementEntity> movementEntities = movementRepository.findAll(ReportSpecification.withFilters(query));    
+            return movementEntities.stream()
+                    .map(movementMapper::toMovement)
+                    .toList();
         });
     }
 

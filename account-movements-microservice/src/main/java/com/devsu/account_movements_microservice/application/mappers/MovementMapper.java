@@ -14,6 +14,7 @@ import com.devsu.account_movements_microservice.domain.models.Movement;
 public interface MovementMapper {
     @Mapping(target = "account", source = "account")
     @Mapping(target = "type", source = "dto", qualifiedByName = "mapType")
+    @Mapping(target = "date", expression = "java(new java.util.Date())")
     public Movement toMovement(CreateMovementRequestDTO dto, Account account);
 
     public MovementResponseDTO toMovementResponseDTO(Movement movement);

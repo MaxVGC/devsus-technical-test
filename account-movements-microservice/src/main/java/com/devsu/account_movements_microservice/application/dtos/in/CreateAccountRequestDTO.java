@@ -16,7 +16,7 @@ import lombok.Setter;
 public class CreateAccountRequestDTO {
 
     @NotNull(message = "accountNumber is required")
-    @Min(value = 1, message = "accountNumber must be greater than or equal to 1")
+    @Min(value = 16, message = "accountNumber must be greater than or equal to 16")
     private Long accountNumber;
 
     @NotNull(message = "balance is required")

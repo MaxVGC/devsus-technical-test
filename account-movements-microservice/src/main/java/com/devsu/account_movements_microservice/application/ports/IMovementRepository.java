@@ -1,7 +1,9 @@
 package com.devsu.account_movements_microservice.application.ports;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.devsu.account_movements_microservice.application.dtos.in.QueryReportDTO;
 import com.devsu.account_movements_microservice.domain.models.Movement;
 
 import reactor.core.publisher.Mono;
@@ -9,4 +11,5 @@ import reactor.core.publisher.Mono;
 public interface IMovementRepository {
     public Mono<Movement> save(Movement movement);
     public Mono<Optional<Movement>> findByMovementId(Long id);
+    public Mono<List<Movement>> findByDatesAndPropietaryId(QueryReportDTO query);
 }
