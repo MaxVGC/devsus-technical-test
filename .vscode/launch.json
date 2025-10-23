@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-AccountMovementsMicroserviceApplication<account-movements-microservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.devsu.account_movements_microservice.AccountMovementsMicroserviceApplication",
+            "projectName": "account-movements-microservice",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ClientPersonMicroserviceApplication<client-person-microservice>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.devsu.client_person_microservice.ClientPersonMicroserviceApplication",
+            "projectName": "client-person-microservice",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

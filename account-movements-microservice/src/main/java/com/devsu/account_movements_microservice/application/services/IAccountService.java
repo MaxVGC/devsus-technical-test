@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono;
 
 public interface IAccountService {
     Mono<Void> create(CreateAccountRequestDTO dto);
+    Mono<Void> createByEvent(CreateAccountRequestDTO dto);
     Mono<Void> update(Long id, UpdateAccountRequestDTO dto);
     Mono<AccountResponseDTO> get(Long id);
 }

@@ -29,7 +29,7 @@ public class MovementServiceImpl implements IMovementService {
 
     @Override
     public Mono<TransactionResponseDTO> create(CreateMovementRequestDTO dto) {
-        Mono<Account> accountMono = accountRepository.findById(dto.getAccountId())
+        Mono<Account> accountMono = accountRepository.findAccountById(dto.getAccountId())
                 .flatMap(optionalAccount -> optionalAccount
                         .map(Mono::just)
                         .orElseGet(() -> Mono.error(new ApplicationException("Account not found"))));
@@ -64,7 +64,7 @@ public class MovementServiceImpl implements IMovementService {
 
     @Override
     public Mono<MovementResponseDTO> get(Long id) {
-        Mono<Movement> movementMono = movementRepository.findById(id)
+        Mono<Movement> movementMono = movementRepository.findByMovementId(id)
                 .flatMap(optionalMovement -> optionalMovement
                         .map(Mono::just)
                         .orElseGet(() -> Mono.error(new ApplicationException("Movement not found"))));

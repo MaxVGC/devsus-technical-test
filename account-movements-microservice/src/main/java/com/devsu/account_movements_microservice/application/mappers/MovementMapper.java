@@ -13,13 +13,13 @@ import com.devsu.account_movements_microservice.domain.models.Movement;
 @Mapper
 public interface MovementMapper {
     @Mapping(target = "account", source = "account")
-    @Mapping(target = "type", source = ".", qualifiedByName = "mapType")
+    @Mapping(target = "type", source = "dto", qualifiedByName = "mapType")
     public Movement toMovement(CreateMovementRequestDTO dto, Account account);
 
     public MovementResponseDTO toMovementResponseDTO(Movement movement);
 
     @Named("mapType")
-    default EMovementType mapType(Movement movement, CreateMovementRequestDTO dto) {
+    default EMovementType mapType(CreateMovementRequestDTO dto) {
         if (dto.getAmount() > 0) {
             return EMovementType.DEPOSIT;
         } else {

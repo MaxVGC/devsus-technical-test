@@ -10,6 +10,6 @@ public class Account {
     private Long accountNumber;
     private Integer balance;
     private EState state;
-    private Client propietary;
+    private Long propietaryId;
     private EAccountType type;
 }

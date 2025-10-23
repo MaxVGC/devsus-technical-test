@@ -1,6 +1,7 @@
 package com.devsu.client_person_microservice.application.services.impl;
 
 import org.mapstruct.factory.Mappers;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import reactor.core.publisher.Mono;
 public class ClientServiceImpl implements IClientService {
     private final IClientRepository clientRepository;
     private final PasswordEncoder passwordEncoder;
+    private final KafkaTemplate<String, String> kafkaTemplate;
     private final ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
 
     @Override
@@ -36,7 +38,11 @@ public class ClientServiceImpl implements IClientService {
                         client.setPassword(passwordEncoder.encode(client.getPassword()));
                         client.setState(EState.ACTIVE);
                         log.info("Creating client with identification: {}", client.getIdentification());
-                        return clientRepository.save(client).then();
+                        return clientRepository.save(client).flatMap(savedClient -> {
+                            kafkaTemplate.send("new-account", savedClient.getId().toString());
+                            log.info("Published new-account event for client ID: {}", savedClient.getId());
+                            return Mono.empty();
+                        });
                     }
                 });
     }

@@ -8,5 +8,5 @@ import reactor.core.publisher.Mono;
 
 public interface IMovementRepository {
     public Mono<Movement> save(Movement movement);
-    public Mono<Optional<Movement>> findById(Long id);
+    public Mono<Optional<Movement>> findByMovementId(Long id);
 }
