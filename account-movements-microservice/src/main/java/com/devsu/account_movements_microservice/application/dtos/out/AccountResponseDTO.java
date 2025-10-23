@@ -1,6 +1,5 @@
 package com.devsu.account_movements_microservice.application.dtos.out;
 
-import com.devsu.account_movements_microservice.domain.models.Client;
 import com.devsu.account_movements_microservice.domain.models.EAccountType;
 import com.devsu.account_movements_microservice.domain.models.EState;
 
@@ -16,6 +15,6 @@ public class AccountResponseDTO {
     private Long accountNumber;
     private Integer balance;
     private EState state;
-    private Client propietary;
+    private Long propietaryId;
     private EAccountType type;
 }

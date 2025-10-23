@@ -17,6 +17,7 @@ import com.devsu.account_movements_microservice.domain.exceptions.ApplicationExc
 import com.devsu.account_movements_microservice.domain.models.Account;
 import com.devsu.account_movements_microservice.domain.models.Client;
 import com.devsu.account_movements_microservice.domain.models.EAccountType;
+import com.devsu.account_movements_microservice.domain.models.EState;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +61,7 @@ public class AccountServiceImpl implements IAccountService {
                                         }
 
                                         Account account = accountMapper.toAccount(dto, dto.getPropietaryId());
+                                        account.setState(EState.ACTIVE);
                                         return accountRepository.save(account).then();
                                 });
         }
@@ -67,6 +69,7 @@ public class AccountServiceImpl implements IAccountService {
         @Override
         public Mono<Void> createByEvent(CreateAccountRequestDTO dto) {
                 Account account = accountMapper.toAccount(dto, dto.getPropietaryId());
+                account.setState(EState.ACTIVE);
                 return accountRepository.save(account).then();
         }
 
