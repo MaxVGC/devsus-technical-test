@@ -81,6 +81,7 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public Mono<ClientResponseDTO> getById(Long id) {
+        log.info("Fetching client with id: {}", id);
         return clientRepository.findById(id)
                 .flatMap(existingClientOpt -> {
                     if (existingClientOpt.isPresent()) {

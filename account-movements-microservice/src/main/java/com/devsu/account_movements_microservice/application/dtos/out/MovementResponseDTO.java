@@ -21,4 +21,5 @@ public class MovementResponseDTO {
     @JsonInclude(Include.NON_NULL)
     private Account account;
     private Date date;
+    private Integer balance;
 }

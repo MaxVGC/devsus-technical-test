@@ -10,6 +10,8 @@ import com.devsu.account_movements_microservice.infrastructure.driver_adapter.po
 public interface MovementMapper {
     @Mapping(target = "id", source = "dto.id")
     @Mapping(target = "account", source = "dto.account")
+    @Mapping(target = "date", source = "dto.movementDate")
     Movement toMovement(MovementEntity dto);
+    @Mapping(target = "movementDate", source = "movement.date")
     MovementEntity toMovementEntity(Movement movement);
 }

@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import jakarta.persistence.criteria.Predicate;
@@ -20,22 +22,32 @@ import jakarta.persistence.criteria.JoinType;
 
 @Slf4j
 public class ReportSpecification {
-     public static Specification<MovementEntity> withFilters(QueryReportDTO params) {
+    public static Specification<MovementEntity> withFilters(QueryReportDTO params) {
         return (root, query, cb) -> {
             List<Predicate> preds = new ArrayList<>();
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             formatter.setTimeZone(TimeZone.getTimeZone("GMT-5"));
 
-            if(params.getClientId() != null) {
+            if (params.getClientId() != null) {
                 Join<MovementEntity, AccountEntity> j = root.join("account", JoinType.INNER);
-                preds.add(cb.equal(j.get("clientId"), params.getClientId()));
+                Long propietaryId = params.getClientId();
+                preds.add(cb.equal(j.get("propietaryId"), propietaryId));
             }
 
             if (params.getStartDate() != null && params.getEndDate() != null) {
-                params.setStartDate(params.getStartDate().replace("%20", " "));
-                params.setEndDate(params.getEndDate().replace("%20", " "));
                 try {
-                    preds.add(cb.between(root.get("movementDate"), formatter.parse(params.getStartDate()), formatter.parse(params.getEndDate())));
+                    Date startDate = formatter.parse(params.getStartDate());
+                    Date endDate = formatter.parse(params.getEndDate());
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(endDate);
+                    calendar.set(Calendar.HOUR_OF_DAY, 23);
+                    calendar.set(Calendar.MINUTE, 59);
+                    calendar.set(Calendar.SECOND, 59);
+                    calendar.set(Calendar.MILLISECOND, 999);
+                    endDate = calendar.getTime();
+
+                    preds.add(cb.between(root.get("movementDate"), startDate, endDate));
                 } catch (ParseException e) {
                     log.error("Error parsing date", e);
                 }

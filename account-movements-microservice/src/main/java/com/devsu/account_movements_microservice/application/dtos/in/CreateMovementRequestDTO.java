@@ -11,7 +11,6 @@ import lombok.Setter;
 public class CreateMovementRequestDTO {
 
     @NotNull(message = "amount is required")
-    @Positive(message = "amount must be greater than 0")
     private Integer amount;
 
     @NotNull(message = "accountId is required")

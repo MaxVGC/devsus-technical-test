@@ -13,4 +13,5 @@ public class Movement {
     private EMovementType type;
     private Account account;
     private Date date;
+    private Integer balance;
 }

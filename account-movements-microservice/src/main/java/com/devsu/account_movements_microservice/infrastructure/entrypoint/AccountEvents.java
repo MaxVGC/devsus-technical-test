@@ -37,7 +37,7 @@ public class AccountEvents {
                 .accountNumber(Long.parseLong(accountNumberStr))
                 .balance(0)
                 .propietaryId(propietaryId)
-                .type(EAccountType.SAVINGS)
+                .type("SAVINGS")
                 .build();
 
         accountService.createByEvent(newAccount)

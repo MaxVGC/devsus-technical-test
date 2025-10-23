@@ -41,11 +41,14 @@ public class MovementServiceImpl implements IMovementService {
             }
 
             Movement movement = movementMapper.toMovement(dto, account);
+            movement.setBalance(newBalance);
             return movementRepository.save(movement)
                     .map(savedMovement -> {
                         TransactionResponseDTO response = TransactionResponseDTO.builder()
                                 .id(savedMovement.getId())
                                 .amount(savedMovement.getAmount())
+                                .date(movement.getDate())
+                                .type(movement.getType().toString())
                                 .build();
 
                         account.setBalance(newBalance);

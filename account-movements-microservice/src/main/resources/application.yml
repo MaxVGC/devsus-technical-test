@@ -6,10 +6,16 @@ spring:
   application:
     name: client-person-microservice
   datasource:
-    username: postgres.cpnpasztdwperymygkiv
-    password: 9yEjHQZib03acNTM
-    url: jdbc:postgresql://aws-1-us-east-1.pooler.supabase.com:6543/postgres?prepareThreshold=0
+    username: devuser
+    password: devpassword
+    url: jdbc:postgresql://192.168.0.6:5432/devdb
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+com:
+  devsu:
+    clients-service:
+      url: http://localhost:8080

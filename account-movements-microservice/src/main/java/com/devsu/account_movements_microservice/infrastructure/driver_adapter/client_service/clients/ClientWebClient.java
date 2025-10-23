@@ -3,6 +3,7 @@ package com.devsu.account_movements_microservice.infrastructure.driver_adapter.c
 import java.util.Optional;
 
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -17,12 +18,15 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class ClientWebClient {
 
+    @Value("${com.devsu.clients-service.url}")
+    private String url;
+
     private final WebClient webClient;
     private final ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
 
     public Mono<Optional<Client>> getClientNameById(Long id) {
         return webClient.get()
-                .uri("/api/v1/clients/{id}", id)
+                .uri(url.concat("/api/v1/clients/"+id))
                 .retrieve()
                 .bodyToMono(ClientDTO.class)
                 .map(clientMapper::toClient)

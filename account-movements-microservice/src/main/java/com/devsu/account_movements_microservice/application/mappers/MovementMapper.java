@@ -15,6 +15,7 @@ public interface MovementMapper {
     @Mapping(target = "account", source = "account")
     @Mapping(target = "type", source = "dto", qualifiedByName = "mapType")
     @Mapping(target = "date", expression = "java(new java.util.Date())")
+    @Mapping(target = "id", ignore = true)
     public Movement toMovement(CreateMovementRequestDTO dto, Account account);
 
     public MovementResponseDTO toMovementResponseDTO(Movement movement);

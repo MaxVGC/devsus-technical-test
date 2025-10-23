@@ -29,5 +29,5 @@ public class CreateAccountRequestDTO {
 
     @NotNull(message = "type is required")
     @Pattern(regexp = "^(?i)(SAVINGS|CHECKING)$", message = "Account type must be 'SAVINGS' or 'CHECKING'")
-    private EAccountType type;
+    private String type;
 }

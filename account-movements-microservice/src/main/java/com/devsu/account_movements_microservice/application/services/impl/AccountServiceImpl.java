@@ -61,11 +61,15 @@ public class AccountServiceImpl implements IAccountService {
                                         boolean hasChecking = existingAccounts.stream()
                                                         .anyMatch(acc -> acc.getType() == EAccountType.CHECKING);
 
-                                        if (dto.getType() == EAccountType.SAVINGS && hasSavings) {
+                                        EAccountType dtoType = dto.getType() != null
+                                                        ? EAccountType.valueOf(dto.getType())
+                                                        : null;
+
+                                        if (dtoType == EAccountType.SAVINGS && hasSavings) {
                                                 return Mono.error(new ApplicationException(
                                                                 "Client already has a SAVINGS account"));
                                         }
-                                        if (dto.getType() == EAccountType.CHECKING && hasChecking) {
+                                        if (dtoType == EAccountType.CHECKING && hasChecking) {
                                                 return Mono.error(new ApplicationException(
                                                                 "Client already has a CHECKING account"));
                                         }
@@ -129,17 +133,21 @@ public class AccountServiceImpl implements IAccountService {
                                                         .anyMatch(acc -> acc.getType() == EAccountType.CHECKING
                                                                         && !acc.getId().equals(id));
 
-                                        if (dto.getType() == EAccountType.SAVINGS && hasSavings) {
+                                        EAccountType dtoType = dto.getType() != null
+                                                        ? EAccountType.valueOf(dto.getType())
+                                                        : null;
+
+                                        if (dtoType == EAccountType.SAVINGS && hasSavings) {
                                                 return Mono.error(new ApplicationException(
                                                                 "Client already has a SAVINGS account"));
                                         }
-                                        if (dto.getType() == EAccountType.CHECKING && hasChecking) {
+                                        if (dtoType == EAccountType.CHECKING && hasChecking) {
                                                 return Mono.error(new ApplicationException(
                                                                 "Client already has a CHECKING account"));
                                         }
 
-                                        account.setState(dto.getState());
-                                        account.setType(dto.getType());
+                                        account.setState(EState.valueOf(dto.getState()));
+                                        account.setType(dtoType);
                                         account.setAccountNumber(dto.getAccountNumber());
 
                                         return accountRepository.save(account).then();
