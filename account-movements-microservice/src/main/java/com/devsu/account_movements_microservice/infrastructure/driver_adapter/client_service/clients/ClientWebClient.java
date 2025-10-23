@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class ClientWebClient {
 
-    @Value("${com.devsu.clients-service.url}")
+    @Value("${com.devsu.clients-service.url:http://localhost:8081}")
     private String url;
 
     private final WebClient webClient;
